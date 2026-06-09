@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp">
+
+    <!-- Assessment Icon -->
+    <FrameLayout
+        android:id="@+id/assessment_icon_container"
+        android:layout_width="40dp"
+        android:layout_height="40dp">
+
+        <ImageView
+            android:id="@+id/img_assessment_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:contentDescription="Assessment" />
+    </FrameLayout>
+
+    <!-- Title and Date -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_assessment_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="#2D3748"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tv_assessment_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textColor="#A0AEC0"
+            android:textSize="11sp" />
+    </LinearLayout>
+
+    <!-- Marks -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_marks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="#2D3748"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Marks Obtained"
+            android:textColor="#A0AEC0"
+            android:textSize="9sp" />
+    </LinearLayout>
+
+    <!-- Grade -->
+    <TextView
+        android:id="@+id/tv_assessment_grade"
+        android:layout_width="32dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="10dp"
+        android:background="@drawable/bg_grade_capsule"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:textColor="#002874"
+        android:textSize="11sp"
+        android:textStyle="bold" />
+
+    <!-- Chevron -->
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="4dp"
+        android:contentDescription="More"
+        android:src="@drawable/ic_chevron_right" />
+</LinearLayout>

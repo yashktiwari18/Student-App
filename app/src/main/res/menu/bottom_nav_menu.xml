@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_dashboard"
+        android:icon="@drawable/ic_home"
+        android:title="@string/nav_dashboard" />
+    <item
+        android:id="@+id/nav_todays_classes"
+        android:icon="@drawable/ic_classes"
+        android:title="@string/nav_todays_classes" />
+    <item
+        android:id="@+id/nav_homework"
+        android:icon="@drawable/ic_homework_nav"
+        android:title="@string/nav_homework" />
+    <item
+        android:id="@+id/nav_talk"
+        android:icon="@drawable/ic_talk"
+        android:title="@string/nav_talk" />
+</menu>
