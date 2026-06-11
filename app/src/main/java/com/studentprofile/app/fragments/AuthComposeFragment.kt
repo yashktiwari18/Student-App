@@ -38,10 +38,13 @@ class AuthComposeFragment : Fragment() {
     ): View {
         val screen = requireArguments().getString(ARG_SCREEN).orEmpty()
         return ComposeView(requireContext()).apply {
-            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
-            val navController = findNavController()
+            setViewCompositionStrategy(
+                ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
+            )
 
             setContent {
+                val navController = findNavController()
+
                 when (screen) {
                     Screen.Login.route -> LoginScreen(navController, authViewModel)
                     Screen.Signup.route -> SignupScreen(navController, authViewModel)

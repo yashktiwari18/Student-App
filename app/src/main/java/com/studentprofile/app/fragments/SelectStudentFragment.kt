@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.studentprofile.app.AuthViewModel
 import com.studentprofile.app.AuthState
 import com.studentprofile.app.R
+import com.studentprofile.app.models.StudentProfile
 
 class SelectStudentFragment : Fragment() {
 
@@ -42,8 +43,23 @@ class SelectStudentFragment : Fragment() {
 
         val children = authViewModel.getChildrenForParent(parentId)
 
+        view.findViewById<TextView>(R.id.tv_student_count).text = "${children.size} Student${if (children.size == 1) "" else "s"}"
+
         val container = view.findViewById<LinearLayout>(R.id.container_student_list)
         container.removeAllViews()
+
+        if (children.isEmpty()) {
+            val emptyView = LayoutInflater.from(requireContext())
+                .inflate(R.layout.item_student_select, container, false)
+            emptyView.findViewById<TextView>(R.id.tv_student_name).text = "No linked students found"
+            emptyView.findViewById<TextView>(R.id.tv_student_class).text = "Please contact support or register a student profile."
+            emptyView.findViewById<TextView>(R.id.tv_student_section).text = ""
+            emptyView.findViewById<TextView>(R.id.tv_student_admission).text = ""
+            emptyView.findViewById<ImageView>(R.id.img_arrow).visibility = View.GONE
+            emptyView.setOnClickListener(null)
+            container.addView(emptyView)
+            return
+        }
 
         for (child in children) {
             val itemView = LayoutInflater.from(requireContext())
@@ -53,11 +69,14 @@ class SelectStudentFragment : Fragment() {
             val tvName = itemView.findViewById<TextView>(R.id.tv_student_name)
             val tvClass = itemView.findViewById<TextView>(R.id.tv_student_class)
             val tvSection = itemView.findViewById<TextView>(R.id.tv_student_section)
+            val tvAdmission = itemView.findViewById<TextView>(R.id.tv_student_admission)
 
             // Set values
             tvName.text = child.displayName
             tvClass.text = child.classInfo
             tvSection.text = child.section?.let { "Section: $it" } ?: "Section: -"
+            tvAdmission.text = child.admissionId?.let { "Admission ID: $it" } ?: "Admission ID: -"
+            img.setImageResource(child.avatarResId ?: R.drawable.ic_attendance)
 
             itemView.setOnClickListener {
                 // Persist selection and navigate to dashboard

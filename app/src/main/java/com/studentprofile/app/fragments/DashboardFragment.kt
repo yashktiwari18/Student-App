@@ -73,7 +73,7 @@ class DashboardFragment : Fragment() {
 
     private fun bindStudentDetails(details: StudentDetails) {
         binding.tvStudentName.text = details.student.displayName
-        binding.tvClassInfo.text = details.student.classInfo
+//        binding.tvClassInfo.text = details.student.classInfo
         binding.tvFatherName.text = details.fatherName ?: "-"
         binding.tvMotherName.text = details.motherName ?: "-"
 

@@ -10,6 +10,7 @@ import com.studentprofile.app.models.ParentAccount
 import com.studentprofile.app.models.StudentDetails
 import com.studentprofile.app.models.StudentProfile
 import com.studentprofile.app.storage.ParentRepository
+import com.studentprofile.app.models.SubjectPerformance
 
 /**
  * Central ViewModel managing all authentication state for the app.

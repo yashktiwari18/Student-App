@@ -44,7 +44,7 @@ fun SignupScreen(navController: NavController, authViewModel: AuthViewModel) {
     var parentId by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
-    var registrationMessage by remember { mutableStateOf<String?>(null) }
+    var registrationErrorMessage by remember { mutableStateOf<String?>(null) }
 
     // Simple form container for multiple students. Each entry holds name, classInfo, admissionId
     data class StudentForm(
@@ -65,7 +65,7 @@ fun SignupScreen(navController: NavController, authViewModel: AuthViewModel) {
     // Surface ViewModel errors as the registration message
     LaunchedEffect(authState) {
         if (authState is AuthState.Error) {
-            registrationMessage = (authState as AuthState.Error).message
+            registrationErrorMessage = (authState as AuthState.Error).message
             authViewModel.clearError()
         }
     }
@@ -107,7 +107,7 @@ fun SignupScreen(navController: NavController, authViewModel: AuthViewModel) {
         )
 
         // Show feedback message (error or success)
-        registrationMessage?.let { message ->
+        registrationErrorMessage?.let { message ->
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = message,
@@ -165,14 +165,14 @@ fun SignupScreen(navController: NavController, authViewModel: AuthViewModel) {
             onClick = {
                 // Client-side confirm-password check
                 if (password != confirmPassword) {
-                    registrationMessage = "Passwords do not match."
+                    registrationErrorMessage = "Passwords do not match."
                     return@Button
                 }
 
                 // Validate parent + students
                 val pId = parentId.trim()
                 if (pId.isBlank()) {
-                    registrationMessage = "Please enter parent login ID."
+                    registrationErrorMessage = "Please enter parent login ID."
                     return@Button
                 }
 
@@ -182,7 +182,7 @@ fun SignupScreen(navController: NavController, authViewModel: AuthViewModel) {
                     val cls = f.classInfo.value.trim()
                     val admission = f.admissionId.value.trim().ifEmpty { null }
                     if (name.isBlank() || cls.isBlank()) {
-                        registrationMessage = "Each student must have a name and class."
+                        registrationErrorMessage = "Each student must have a name and class."
                         return@Button
                     }
                     // Generate a lightweight studentId derived from name + index
@@ -200,7 +200,7 @@ fun SignupScreen(navController: NavController, authViewModel: AuthViewModel) {
                 )
 
                 if (success) {
-                    registrationMessage = "Registration successful! Redirecting to Login..."
+                    registrationErrorMessage = "Registration successful! Redirecting to Login..."
                     // Navigate to Login after successful registration
                     navController.navigate(R.id.nav_login) {
                         popUpTo(R.id.nav_signup) { inclusive = true }
@@ -243,12 +243,6 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
             is AuthState.Error -> {
                 loginErrorMessage = (authState as AuthState.Error).message
                 authViewModel.clearError()
-            }
-            is AuthState.ParentAuthenticated -> {
-                // Navigate to student selection screen when parent has multiple children
-                navController.navigate(R.id.nav_select_student) {
-                    popUpTo(R.id.nav_login) { inclusive = true }
-                }
             }
             else -> { /* Authenticated is handled by MainActivity switching to XML dashboard */ }
         }

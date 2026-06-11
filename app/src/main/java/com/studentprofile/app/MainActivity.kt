@@ -12,6 +12,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.distinctUntilChanged
 
 class MainActivity : FragmentActivity() {
 
@@ -33,6 +34,7 @@ class MainActivity : FragmentActivity() {
 
         val startDestination = when (authViewModel.authState.value) {
             is AuthState.Authenticated -> R.id.nav_dashboard
+            is AuthState.ParentAuthenticated -> R.id.nav_select_student
             else -> R.id.nav_intro
         }
 
@@ -48,19 +50,47 @@ class MainActivity : FragmentActivity() {
 
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                authViewModel.authState.collect { state ->
-                    if (state is AuthState.Unauthenticated &&
-                        navController.currentDestination?.id != R.id.nav_intro) {
-
-                        bottomNav.isVisible = false
-
-                        navController.navigate(R.id.nav_intro) {
-                            popUpTo(navController.graph.startDestinationId) {
-                                inclusive = true
+                authViewModel.authState.collect  { state ->
+                        when (state) {
+                            is AuthState.Unauthenticated -> {
+                                bottomNav.isVisible = false
+                                navigateToDestination(R.id.nav_intro, popBackStack = true)
                             }
-                            launchSingleTop = true
+
+                            is AuthState.Authenticated -> {
+                                bottomNav.isVisible = true
+                                navigateToDestination(R.id.nav_dashboard, popBackStack = true)
+                            }
+
+                            is AuthState.ParentAuthenticated -> {
+                                bottomNav.isVisible = false
+                                navigateToDestination(R.id.nav_select_student, popBackStack = false)
+                            }
+
+                            is AuthState.Error -> {
+                                // Let Compose screen show error.
+                            }
+
+                            AuthState.Loading -> {
+                                // Do nothing for now.
+                            }
                         }
                     }
+            }
+        }
+
+    }
+
+    private fun navigateToDestination(destinationId: Int, popBackStack: Boolean) {
+        if (navController.currentDestination?.id == destinationId) {
+            return
+        }
+
+        navController.navigate(destinationId) {
+            launchSingleTop = true
+            if (popBackStack) {
+                popUpTo(navController.graph.startDestinationId) {
+                    inclusive = true
                 }
             }
         }
