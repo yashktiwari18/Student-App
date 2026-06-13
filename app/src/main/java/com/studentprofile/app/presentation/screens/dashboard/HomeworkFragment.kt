@@ -1,4 +1,4 @@
-package com.studentprofile.app.fragments
+package com.studentprofile.app.presentation.screens.dashboard
 
 import android.graphics.Color
 import android.os.Bundle
@@ -13,7 +13,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.studentprofile.app.R
 import com.studentprofile.app.databinding.FragmentHomeworkBinding
-import com.studentprofile.app.models.HomeworkItem
+import com.studentprofile.app.domain.models.HomeworkItem
 
 class HomeworkFragment : Fragment() {
 
@@ -71,8 +71,8 @@ class HomeworkFragment : Fragment() {
             ),
             HomeworkItem(
                 "Hindi",
-                "\u092A\u093E\u0920 2 - \u0930\u093E\u092E-\u0932\u0915\u094D\u0937\u094D\u092E\u0923-\u092A\u0930\u0936\u0941\u0930\u093E\u092E \u0938\u0902\u0935\u093E\u0926",
-                "\u092A\u094D\u0930\u0936\u094D\u0928 \u0905\u092D\u094D\u092F\u093E\u0938 (\u092A\u094D\u0930\u0936\u094D\u0928 1 \u0938\u0947 5) \u0909\u0924\u094D\u0924\u0930 \u092A\u0941\u0938\u094D\u0924\u093F\u0915\u093E \u092E\u0947\u0902 \u0932\u093F\u0916\u0947\u0902\u0964",
+                "पाठ 2 - राम-लक्ष्मण-परशुराम संवाद",
+                "प्रश्न अभ्यास (प्रश्न 1 से 5) उत्तर पुस्तिका में लिखें।",
                 "23 May 2025",
                 "26 May 2025",
                 "Pending",
@@ -107,20 +107,17 @@ class HomeworkFragment : Fragment() {
             val itemView = LayoutInflater.from(requireContext())
                 .inflate(R.layout.item_homework_card, container, false)
 
-            // Set subject icon with background
             val iconContainer = itemView.findViewById<FrameLayout>(R.id.hw_icon_container)
             iconContainer.setBackgroundResource(homework.iconBgRes)
             val iconImage = itemView.findViewById<ImageView>(R.id.img_hw_icon)
             iconImage.setImageResource(homework.iconRes)
 
-            // Set text fields
             itemView.findViewById<TextView>(R.id.tv_hw_subject).text = homework.subject
             itemView.findViewById<TextView>(R.id.tv_hw_chapter).text = homework.chapter
             itemView.findViewById<TextView>(R.id.tv_hw_description).text = homework.description
             itemView.findViewById<TextView>(R.id.tv_hw_assigned_date).text = homework.assignedDate
             itemView.findViewById<TextView>(R.id.tv_hw_due_date).text = homework.dueDate
 
-            // Set status badge
             val statusBadge = itemView.findViewById<LinearLayout>(R.id.badge_hw_status)
             val statusIcon = itemView.findViewById<ImageView>(R.id.img_hw_status_icon)
             val statusText = itemView.findViewById<TextView>(R.id.tv_hw_status)
@@ -137,7 +134,6 @@ class HomeworkFragment : Fragment() {
                 statusText.setTextColor(Color.parseColor("#FF9F43"))
             }
 
-            // Download button click
             itemView.findViewById<LinearLayout>(R.id.btn_download).setOnClickListener {
                 Toast.makeText(requireContext(), "Download ${homework.subject} homework - Next step implementation", Toast.LENGTH_SHORT).show()
             }
@@ -170,7 +166,6 @@ class HomeworkFragment : Fragment() {
         val navyColor = Color.parseColor("#002874")
         val grayColor = Color.parseColor("#718096")
 
-        // Reset all tabs
         binding.tvTabAll.setTextColor(grayColor)
         binding.tvTabAll.paint.isFakeBoldText = false
         binding.indicatorAll.setBackgroundColor(Color.TRANSPARENT)
@@ -183,7 +178,6 @@ class HomeworkFragment : Fragment() {
         binding.tvTabCompleted.paint.isFakeBoldText = false
         binding.indicatorCompleted.setBackgroundColor(Color.TRANSPARENT)
 
-        // Activate selected tab
         when (activeTab) {
             "all" -> {
                 binding.tvTabAll.setTextColor(navyColor)

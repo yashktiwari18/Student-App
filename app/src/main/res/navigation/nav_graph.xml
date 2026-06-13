@@ -3,65 +3,40 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/nav_intro">
+    app:startDestination="@id/nav_auth">
 
     <fragment
-        android:id="@+id/nav_intro"
-        android:name="com.studentprofile.app.fragments.AuthComposeFragment"
-        android:label="Intro">
-        <argument
-            android:name="screen"
-            app:argType="string"
-            android:defaultValue="intro" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/nav_login"
-        android:name="com.studentprofile.app.fragments.AuthComposeFragment"
-        android:label="Login">
-        <argument
-            android:name="screen"
-            app:argType="string"
-            android:defaultValue="login" />
-    </fragment>
+        android:id="@+id/nav_auth"
+        android:name="com.studentprofile.app.presentation.screens.auth.AuthComposeFragment"
+        android:label="Authentication" />
 
     <fragment
         android:id="@+id/nav_select_student"
-        android:name="com.studentprofile.app.fragments.SelectStudentFragment"
+        android:name="com.studentprofile.app.presentation.screens.auth.SelectStudentFragment"
         android:label="Select Student"
         tools:layout="@layout/fragment_select_student" />
 
     <fragment
-        android:id="@+id/nav_signup"
-        android:name="com.studentprofile.app.fragments.AuthComposeFragment"
-        android:label="Sign Up">
-        <argument
-            android:name="screen"
-            app:argType="string"
-            android:defaultValue="signup" />
-    </fragment>
-
-    <fragment
         android:id="@+id/nav_dashboard"
-        android:name="com.studentprofile.app.fragments.DashboardFragment"
+        android:name="com.studentprofile.app.presentation.screens.dashboard.DashboardFragment"
         android:label="Dashboard"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
         android:id="@+id/nav_todays_classes"
-        android:name="com.studentprofile.app.fragments.TodaysClassesFragment"
+        android:name="com.studentprofile.app.presentation.screens.dashboard.TodaysClassesFragment"
         android:label="Today's Classes"
         tools:layout="@layout/fragment_todays_classes" />
 
     <fragment
         android:id="@+id/nav_homework"
-        android:name="com.studentprofile.app.fragments.HomeworkFragment"
+        android:name="com.studentprofile.app.presentation.screens.dashboard.HomeworkFragment"
         android:label="Homework"
         tools:layout="@layout/fragment_homework" />
 
     <fragment
         android:id="@+id/nav_talk"
-        android:name="com.studentprofile.app.fragments.TalkFragment"
+        android:name="com.studentprofile.app.presentation.screens.dashboard.TalkFragment"
         android:label="Talk"
         tools:layout="@layout/fragment_talk" />
 

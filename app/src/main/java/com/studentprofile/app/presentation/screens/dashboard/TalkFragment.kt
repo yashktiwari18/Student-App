@@ -1,4 +1,4 @@
-package com.studentprofile.app.fragments
+package com.studentprofile.app.presentation.screens.dashboard
 
 import android.os.Bundle
 import android.view.LayoutInflater

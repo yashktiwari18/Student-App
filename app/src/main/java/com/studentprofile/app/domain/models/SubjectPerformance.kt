@@ -1,4 +1,4 @@
-package com.studentprofile.app.models
+package com.studentprofile.app.domain.models
 
 import androidx.annotation.DrawableRes
 

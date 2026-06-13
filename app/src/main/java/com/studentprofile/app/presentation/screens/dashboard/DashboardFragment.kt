@@ -1,4 +1,4 @@
-package com.studentprofile.app.fragments
+package com.studentprofile.app.presentation.screens.dashboard
 
 import android.graphics.Color
 import android.graphics.drawable.ClipDrawable
@@ -21,12 +21,14 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.studentprofile.app.R
-import com.studentprofile.app.AuthViewModel
+import com.studentprofile.app.presentation.viewmodel.AuthViewModel
 import com.studentprofile.app.databinding.FragmentDashboardBinding
-import com.studentprofile.app.models.StudentDetails
-import com.studentprofile.app.models.RecentAssessment
-import com.studentprofile.app.models.SubjectPerformance
+import com.studentprofile.app.domain.models.StudentDetails
+import com.studentprofile.app.domain.models.RecentAssessment
+import com.studentprofile.app.domain.models.SubjectPerformance
+import com.studentprofile.app.presentation.components.StudentSwitchBottomSheetFragment
 import kotlinx.coroutines.launch
+
 class DashboardFragment : Fragment() {
 
     private var _binding: FragmentDashboardBinding? = null
@@ -73,7 +75,6 @@ class DashboardFragment : Fragment() {
 
     private fun bindStudentDetails(details: StudentDetails) {
         binding.tvStudentName.text = details.student.displayName
-//        binding.tvClassInfo.text = details.student.classInfo
         binding.tvFatherName.text = details.fatherName ?: "-"
         binding.tvMotherName.text = details.motherName ?: "-"
 
@@ -129,74 +130,13 @@ class DashboardFragment : Fragment() {
         }
     }
 
-    private fun setupSubjectPerformance() {
-        val subjects = listOf(
-            SubjectPerformance("English", 82.0f, "A", R.drawable.ic_subject_english, R.drawable.bg_subject_icon_english, Color.parseColor("#28C76F")),
-            SubjectPerformance("Hindi", 78.0f, "B+", R.drawable.ic_subject_hindi, R.drawable.bg_subject_icon_hindi, Color.parseColor("#EA5455")),
-            SubjectPerformance("Mathematics", 74.0f, "B", R.drawable.ic_subject_math, R.drawable.bg_subject_icon_math, Color.parseColor("#FF9F43")),
-            SubjectPerformance("Science", 81.0f, "A", R.drawable.ic_subject_science, R.drawable.bg_subject_icon_science, Color.parseColor("#28C76F")),
-            SubjectPerformance("Social Science", 75.0f, "B+", R.drawable.ic_subject_social, R.drawable.bg_subject_icon_social, Color.parseColor("#28C76F")),
-            SubjectPerformance("Computer", 90.0f, "A+", R.drawable.ic_subject_computer, R.drawable.bg_subject_icon_computer, Color.parseColor("#28C76F")),
-            SubjectPerformance("Sanskrit", 85.0f, "A", R.drawable.ic_subject_sanskrit, R.drawable.bg_subject_icon_sanskrit, Color.parseColor("#28C76F"))
-        )
-
-        val container = binding.containerSubjectList
-        container.removeAllViews()
-
-        for (subject in subjects) {
-            val itemView = LayoutInflater.from(requireContext())
-                .inflate(R.layout.item_subject_performance, container, false)
-
-            // Set subject icon with background
-            val iconContainer = itemView.findViewById<FrameLayout>(R.id.subject_icon_container)
-            iconContainer.setBackgroundResource(subject.iconBgRes)
-            val iconImage = itemView.findViewById<ImageView>(R.id.img_subject_icon)
-            iconImage.setImageResource(subject.iconRes)
-
-            // Set subject name
-            itemView.findViewById<TextView>(R.id.tv_subject_name).text = subject.name
-
-            // Set progress bar with custom drawable
-            val progressBar = itemView.findViewById<ProgressBar>(R.id.progress_subject)
-            progressBar.progress = subject.percentage.toInt()
-            val progressDrawable = createProgressDrawable(subject.progressColor)
-            progressBar.progressDrawable = progressDrawable
-
-            // Set percentage text
-            itemView.findViewById<TextView>(R.id.tv_percentage).text = String.format("%.1f%%", subject.percentage)
-
-            // Set grade
-            itemView.findViewById<TextView>(R.id.tv_grade).text = subject.grade
-
-            // Click listener
-            itemView.setOnClickListener {
-                Toast.makeText(requireContext(), "${subject.name} details - Next step", Toast.LENGTH_SHORT).show()
-            }
-
-            container.addView(itemView)
-
-            // Add divider except for last item
-            if (subject != subjects.last()) {
-                val divider = View(requireContext()).apply {
-                    layoutParams = LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT, 1
-                    )
-                    setBackgroundColor(Color.parseColor("#EDF2F7"))
-                }
-                container.addView(divider)
-            }
-        }
-    }
-
     private fun createProgressDrawable(color: Int): LayerDrawable {
-        // Background track
         val trackShape = GradientDrawable().apply {
             shape = GradientDrawable.RECTANGLE
             cornerRadius = 12f
             setColor(Color.parseColor("#E8ECF0"))
         }
 
-        // Progress fill
         val progressShape = GradientDrawable().apply {
             shape = GradientDrawable.RECTANGLE
             cornerRadius = 12f
@@ -229,26 +169,22 @@ class DashboardFragment : Fragment() {
             val itemView = LayoutInflater.from(requireContext())
                 .inflate(R.layout.item_recent_assessment, container, false)
 
-            // Set icon with background
             val iconContainer = itemView.findViewById<FrameLayout>(R.id.assessment_icon_container)
             iconContainer.setBackgroundResource(assessment.iconBgRes)
             val iconImage = itemView.findViewById<ImageView>(R.id.img_assessment_icon)
             iconImage.setImageResource(assessment.iconRes)
 
-            // Set text fields
             itemView.findViewById<TextView>(R.id.tv_assessment_title).text = assessment.title
             itemView.findViewById<TextView>(R.id.tv_assessment_date).text = assessment.date
             itemView.findViewById<TextView>(R.id.tv_marks).text = assessment.marks
             itemView.findViewById<TextView>(R.id.tv_assessment_grade).text = assessment.grade
 
-            // Click listener
             itemView.setOnClickListener {
                 Toast.makeText(requireContext(), "${assessment.title} - Next step", Toast.LENGTH_SHORT).show()
             }
 
             container.addView(itemView)
 
-            // Add divider except for last
             if (assessment != assessments.last()) {
                 val divider = View(requireContext()).apply {
                     layoutParams = LinearLayout.LayoutParams(

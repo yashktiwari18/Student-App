@@ -1,4 +1,4 @@
-package com.studentprofile.app.fragments
+package com.studentprofile.app.presentation.screens.auth
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,10 +11,10 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.studentprofile.app.AuthViewModel
-import com.studentprofile.app.AuthState
+import com.studentprofile.app.presentation.viewmodel.AuthViewModel
+import com.studentprofile.app.presentation.viewmodel.AuthState
 import com.studentprofile.app.R
-import com.studentprofile.app.models.StudentProfile
+import com.studentprofile.app.domain.models.StudentProfile
 
 class SelectStudentFragment : Fragment() {
 
@@ -31,17 +31,13 @@ class SelectStudentFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Determine parentId from AuthState
         val state = authViewModel.authState.value
-        val parentId = when (state) {
-            is AuthState.ParentAuthenticated -> state.parentId
+        val children = when (state) {
+            is AuthState.StudentSelectionRequired -> state.students
             else -> null
         }
 
-        // Fallback: do nothing if parentId missing
-        if (parentId == null) return
-
-        val children = authViewModel.getChildrenForParent(parentId)
+        if (children == null) return
 
         view.findViewById<TextView>(R.id.tv_student_count).text = "${children.size} Student${if (children.size == 1) "" else "s"}"
 
@@ -71,7 +67,6 @@ class SelectStudentFragment : Fragment() {
             val tvSection = itemView.findViewById<TextView>(R.id.tv_student_section)
             val tvAdmission = itemView.findViewById<TextView>(R.id.tv_student_admission)
 
-            // Set values
             tvName.text = child.displayName
             tvClass.text = child.classInfo
             tvSection.text = child.section?.let { "Section: $it" } ?: "Section: -"
@@ -79,7 +74,6 @@ class SelectStudentFragment : Fragment() {
             img.setImageResource(child.avatarResId ?: R.drawable.ic_attendance)
 
             itemView.setOnClickListener {
-                // Persist selection and navigate to dashboard
                 authViewModel.selectStudent(child.studentId)
                 findNavController().navigate(R.id.nav_dashboard) {
                     popUpTo(R.id.nav_select_student) { inclusive = true }

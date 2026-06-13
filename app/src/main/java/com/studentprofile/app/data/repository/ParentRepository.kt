@@ -1,19 +1,12 @@
-package com.studentprofile.app.storage
+package com.studentprofile.app.data.repository
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.studentprofile.app.models.ParentAccount
-import com.studentprofile.app.models.StudentProfile
+import com.studentprofile.app.domain.models.ParentAccount
+import com.studentprofile.app.domain.models.StudentProfile
 import org.json.JSONArray
 import org.json.JSONObject
 
-/**
- * Lightweight SharedPreferences-backed repository for storing ParentAccount and StudentProfile data.
- *
- * This class is intentionally minimal: it serializes the parent list to JSON under a single key.
- * It provides helper methods to read/update parents and their children. Designed for local-only
- * storage so it can be integrated with the existing authentication flow without changing login.
- */
 class ParentRepository(private val context: Context) {
 
     companion object {
@@ -54,7 +47,6 @@ class ParentRepository(private val context: Context) {
         val index = parents.indexOfFirst { it.parentId == parentId }
         if (index < 0) return false
         val parent = parents[index]
-        // avoid duplicates by studentId
         if (parent.children.any { it.studentId == child.studentId }) return false
         val updated = parent.copy(children = parent.children + child)
         parents[index] = updated
@@ -75,7 +67,6 @@ class ParentRepository(private val context: Context) {
         return getParents().firstOrNull { parent -> parent.children.any { it.studentId == studentId } }
     }
 
-    // ----------------- JSON helpers -----------------
     private fun parentToJson(parent: ParentAccount): JSONObject {
         val obj = JSONObject()
         obj.put("parentId", parent.parentId)

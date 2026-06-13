@@ -8,11 +8,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.flow.distinctUntilChanged
+import com.studentprofile.app.presentation.viewmodel.AuthViewModel
+import com.studentprofile.app.presentation.viewmodel.AuthState
 
 class MainActivity : FragmentActivity() {
 
@@ -23,7 +25,6 @@ class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Create ViewModel scoped to this Activity — survives config changes
         authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
         setContentView(R.layout.activity_main)
 
@@ -32,10 +33,11 @@ class MainActivity : FragmentActivity() {
         navController = navHostFragment.navController
         bottomNav = findViewById(R.id.bottom_navigation)
 
-        val startDestination = when (authViewModel.authState.value) {
-            is AuthState.Authenticated -> R.id.nav_dashboard
-            is AuthState.ParentAuthenticated -> R.id.nav_select_student
-            else -> R.id.nav_intro
+        // Set start destination based on whether user is already authenticated
+        val startDestination = if (authViewModel.authState.value is AuthState.Authenticated) {
+            R.id.nav_dashboard
+        } else {
+            R.id.nav_auth
         }
 
         navController.graph = navController.navInflater
@@ -44,55 +46,39 @@ class MainActivity : FragmentActivity() {
                 setStartDestination(startDestination)
             }
 
-
         bottomNav.setupWithNavController(navController)
         bottomNav.isVisible = authViewModel.authState.value is AuthState.Authenticated
 
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                authViewModel.authState.collect  { state ->
-                        when (state) {
-                            is AuthState.Unauthenticated -> {
-                                bottomNav.isVisible = false
-                                navigateToDestination(R.id.nav_intro, popBackStack = true)
-                            }
-
-                            is AuthState.Authenticated -> {
-                                bottomNav.isVisible = true
-                                navigateToDestination(R.id.nav_dashboard, popBackStack = true)
-                            }
-
-                            is AuthState.ParentAuthenticated -> {
-                                bottomNav.isVisible = false
-                                navigateToDestination(R.id.nav_select_student, popBackStack = false)
-                            }
-
-                            is AuthState.Error -> {
-                                // Let Compose screen show error.
-                            }
-
-                            AuthState.Loading -> {
-                                // Do nothing for now.
-                            }
+                authViewModel.authState.collect { state ->
+                    when (state) {
+                        is AuthState.Authenticated -> {
+                            bottomNav.isVisible = true
+                            navigateToDestination(R.id.nav_dashboard, popBackStack = true)
+                        }
+                        else -> {
+                            bottomNav.isVisible = false
+                            // If any auth state other than Authenticated, stay/go to auth fragment
+                            // Note: Navigation within auth screens is handled inside AuthComposeFragment
+                            navigateToDestination(R.id.nav_auth, popBackStack = true)
                         }
                     }
-            }
-        }
-
-    }
-
-    private fun navigateToDestination(destinationId: Int, popBackStack: Boolean) {
-        if (navController.currentDestination?.id == destinationId) {
-            return
-        }
-
-        navController.navigate(destinationId) {
-            launchSingleTop = true
-            if (popBackStack) {
-                popUpTo(navController.graph.startDestinationId) {
-                    inclusive = true
                 }
             }
         }
+    }
+
+    private fun navigateToDestination(destinationId: Int, popBackStack: Boolean) {
+        if (navController.currentDestination?.id == destinationId) return
+
+        val options = NavOptions.Builder()
+            .setLaunchSingleTop(true)
+            .apply {
+                if (popBackStack) setPopUpTo(navController.graph.startDestinationId, true)
+            }
+            .build()
+
+        navController.navigate(destinationId, null, options)
     }
 }

@@ -177,7 +177,7 @@
                         android:textColor="@color/text_secondary"
                         android:textSize="10sp" />
 
-                    <com.studentprofile.app.views.CircularProgressView
+                    <com.studentprofile.app.presentation.components.CircularProgressView
                         android:id="@+id/progress_attendance"
                         android:layout_width="65dp"
                         android:layout_height="65dp"
@@ -224,7 +224,7 @@
                         android:textColor="@color/text_secondary"
                         android:textSize="10sp" />
 
-                    <com.studentprofile.app.views.CircularProgressView
+                    <com.studentprofile.app.presentation.components.CircularProgressView
                         android:id="@+id/progress_avg_score"
                         android:layout_width="65dp"
                         android:layout_height="65dp"
@@ -272,7 +272,7 @@
                         android:textColor="@color/text_secondary"
                         android:textSize="10sp" />
 
-                    <com.studentprofile.app.views.CircularProgressView
+                    <com.studentprofile.app.presentation.components.CircularProgressView
                         android:id="@+id/progress_homework"
                         android:layout_width="65dp"
                         android:layout_height="65dp"

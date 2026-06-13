@@ -1,4 +1,4 @@
-package com.studentprofile.app.models
+package com.studentprofile.app.domain.models
 
 import androidx.annotation.DrawableRes
 
@@ -8,7 +8,7 @@ data class HomeworkItem(
     val description: String,
     val assignedDate: String,
     val dueDate: String,
-    val status: String, // "Completed" or "Pending"
+    val status: String,
     @DrawableRes val iconRes: Int,
     @DrawableRes val iconBgRes: Int
 )

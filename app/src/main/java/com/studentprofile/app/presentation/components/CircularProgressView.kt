@@ -1,4 +1,4 @@
-package com.studentprofile.app.views
+package com.studentprofile.app.presentation.components
 
 import android.content.Context
 import android.graphics.Canvas
@@ -80,14 +80,11 @@ class CircularProgressView @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        // Draw background track (full circle)
         canvas.drawArc(rectF, 0f, 360f, false, trackPaint)
 
-        // Draw progress arc (starting from top: -90 degrees)
         val sweepAngle = (progress / maxProgress) * 360f
         canvas.drawArc(rectF, -90f, sweepAngle, false, progressPaint)
 
-        // Draw center text
         val displayText = centerText ?: if (showPercentage) {
             String.format("%.1f%%", progress)
         } else {

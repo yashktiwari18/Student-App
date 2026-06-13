@@ -1,9 +1,5 @@
-package com.studentprofile.app.models
+package com.studentprofile.app.domain.models
 
-/**
- * Aggregated student data used by the UI. This merges static profile info with
- * runtime metrics (attendance, scores, homework, behaviour and subject-wise performance).
- */
 data class StudentDetails(
     val student: StudentProfile,
     val fatherName: String? = null,

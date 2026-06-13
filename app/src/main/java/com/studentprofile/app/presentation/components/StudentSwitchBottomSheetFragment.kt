@@ -1,4 +1,4 @@
-package com.studentprofile.app.fragments
+package com.studentprofile.app.presentation.components
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.studentprofile.app.AuthViewModel
+import com.studentprofile.app.presentation.viewmodel.AuthViewModel
 import com.studentprofile.app.R
 
 class StudentSwitchBottomSheetFragment : BottomSheetDialogFragment() {
