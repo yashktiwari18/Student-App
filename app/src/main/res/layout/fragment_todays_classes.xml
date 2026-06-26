@@ -28,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-medium"
-                android:text="Today's Classes"
+                android:text="Classes"
                 android:textColor="@color/text_primary"
                 android:textSize="22sp"
                 android:textStyle="bold" />
@@ -37,58 +37,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Track what was taught today and watch class videos."
+                android:text="View class schedules and recorded sessions."
                 android:textColor="@color/text_secondary"
                 android:textSize="13sp" />
 
             <!-- Date Selector -->
-            <LinearLayout
-                android:id="@+id/date_selector"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/bg_date_picker"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="14dp">
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:contentDescription="Calendar"
-                    android:src="@drawable/ic_calendar" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Select Date"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="11sp" />
-
-                    <TextView
-                        android:id="@+id/tv_selected_date"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif-medium"
-                        android:text="24 May 2025, Saturday"
-                        android:textColor="@color/text_primary"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:contentDescription="Expand"
-                    android:src="@drawable/ic_chevron_down" />
-            </LinearLayout>
 
             <!-- Tab Bar -->
             <LinearLayout
@@ -109,7 +63,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-medium"
-                        android:text="Today's Classes"
+                        android:text="Today"
                         android:textColor="@color/navy_primary"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -134,7 +88,7 @@
                         android:id="@+id/tv_tab_past"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Past Classes"
+                        android:text="Past"
                         android:textColor="@color/text_secondary"
                         android:textSize="14sp" />
 
@@ -155,6 +109,7 @@
 
             <!-- Completed Classes Header -->
             <LinearLayout
+                android:id="@+id/layout_completed_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -214,6 +169,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:orientation="vertical" />
+
+            <!-- Past Classes Container -->
+            <LinearLayout
+                android:id="@+id/container_past_classes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="vertical"
+                android:visibility="gone"/>
 
             <!-- How it works info banner -->
             <LinearLayout

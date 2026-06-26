@@ -15,6 +15,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.launch
 import com.studentprofile.app.presentation.viewmodel.AuthViewModel
 import com.studentprofile.app.presentation.viewmodel.AuthState
+import androidx.compose.ui.platform.ComposeView
+import androidx.drawerlayout.widget.DrawerLayout
+import com.studentprofile.app.ui.SchoolNavigationDrawer
 
 class MainActivity : FragmentActivity() {
 
@@ -27,6 +30,14 @@ class MainActivity : FragmentActivity() {
 
         authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
         setContentView(R.layout.activity_main)
+        val composeDrawer = findViewById<ComposeView>(R.id.compose_drawer)
+
+        composeDrawer.setContent {
+            SchoolNavigationDrawer(
+                studentName = "Yash Tiwari",
+                classInfo = "Class 10 - A"
+            )
+        }
 
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment

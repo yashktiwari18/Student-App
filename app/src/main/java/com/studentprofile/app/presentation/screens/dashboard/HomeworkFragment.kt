@@ -11,9 +11,15 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.DateValidatorPointBackward
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.studentprofile.app.R
 import com.studentprofile.app.databinding.FragmentHomeworkBinding
 import com.studentprofile.app.domain.models.HomeworkItem
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class HomeworkFragment : Fragment() {
 
@@ -199,10 +205,38 @@ class HomeworkFragment : Fragment() {
 
     private fun setupClickListeners() {
         binding.dateSelectorHw.setOnClickListener {
-            Toast.makeText(requireContext(), "Date picker - Next step implementation", Toast.LENGTH_SHORT).show()
+            showDatePicker()
         }
     }
 
+
+    private fun showDatePicker() {
+
+        val constraints = CalendarConstraints.Builder()
+            .setValidator(
+                DateValidatorPointBackward.now()
+            )
+            .build()
+
+        val datePicker = MaterialDatePicker.Builder.datePicker()
+            .setTitleText("Select Class Date")
+            .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+            .setCalendarConstraints(constraints)
+            .build()
+
+        datePicker.addOnPositiveButtonClickListener { selection ->
+
+            val formatter = SimpleDateFormat(
+                "dd MMM yyyy, EEEE",
+                Locale.getDefault()
+            )
+
+            binding.tvHwDate.text =
+                formatter.format(Date(selection))
+        }
+
+        datePicker.show(parentFragmentManager, "DATE_PICKER")
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

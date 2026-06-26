@@ -40,4 +40,40 @@
         android:label="Talk"
         tools:layout="@layout/fragment_talk" />
 
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.studentprofile.app.presentation.screens.profile.ProfileFragment"
+        android:label="Profile" />
+
+    <fragment
+        android:id="@+id/notificationFragment"
+        android:name="com.studentprofile.app.presentation.screens.notifications.NotificationFragment"
+        android:label="Notification" />
+
+    <fragment
+        android:id="@+id/subjectPerformanceFragment"
+        android:name="com.studentprofile.app.presentation.screens.Performance.SubjectPerformanceFragment"
+        android:label="Subject Performance"
+        tools:layout="@layout/fragment_subject_performance" />
+
+    <fragment
+        android:id="@+id/assessmentFragment"
+        android:name="com.studentprofile.app.presentation.screens.assessments.AssessmentFragment"
+        android:label="Assessment" />
+
+    <fragment
+        android:id="@+id/attendanceFragment"
+        android:name="com.studentprofile.app.presentation.screens.Performance.AttendanceFragment"
+        android:label="Attendance" />
+
+    <fragment
+        android:id="@+id/averageScoreFragment"
+        android:name="com.studentprofile.app.presentation.screens.Performance.AverageScoreFragment"
+        android:label="Average Score"/>
+
+    <fragment
+        android:id="@+id/homeworkStatsFragment"
+        android:name="com.studentprofile.app.presentation.screens.Performance.HomeworkStatsFragment"
+        android:label="Homework Statistics" />
+
 </navigation>

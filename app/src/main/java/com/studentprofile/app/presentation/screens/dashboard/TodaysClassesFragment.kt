@@ -31,10 +31,17 @@ class TodaysClassesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         setupClassCards()
         setupTabListeners()
-        setupClickListeners()
+        binding.containerPastClasses.visibility = View.GONE
+
+
+
+
     }
+
+
 
     private fun setupClassCards() {
         val classes = listOf(
@@ -87,10 +94,134 @@ class TodaysClassesFragment : Fragment() {
             itemView.findViewById<TextView>(R.id.tv_class_status).text = classSession.status
 
             itemView.findViewById<LinearLayout>(R.id.btn_play_video).setOnClickListener {
-                Toast.makeText(requireContext(), "Play Video: ${classSession.subject} - Next step implementation", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Watch Recording: ${classSession.subject} - Next step implementation", Toast.LENGTH_SHORT).show()
             }
 
             container.addView(itemView)
+        }
+    }
+
+    private fun setupPastClasses() {
+
+        val container = binding.containerPastClasses
+
+        container.removeAllViews()
+
+        addDateSection(
+            container,
+            "23 Jun 2026",
+            listOf(
+                "English",
+                "Mathematics"
+            )
+        )
+
+        addDateSection(
+            container,
+            "22 Jun 2026",
+            listOf(
+                "Science"
+            )
+        )
+
+        addDateSection(
+            container,
+            "21 Jun 2026",
+            listOf(
+                "Computer",
+                "Hindi"
+            )
+        )
+    }
+
+    private fun addDateSection(
+        container: LinearLayout,
+        date: String,
+        subjects: List<String>
+    ) {
+
+        val headerView = LayoutInflater.from(requireContext())
+            .inflate(R.layout.item_date_header, container, false)
+
+        headerView.findViewById<TextView>(R.id.tvDateHeader).text = date
+
+        container.addView(headerView)
+
+        subjects.forEach { subject ->
+
+            val cardView = LayoutInflater.from(requireContext())
+                .inflate(R.layout.item_class_card, container, false)
+
+            cardView.findViewById<TextView>(R.id.tv_time_range)
+                .text = "Recorded Class"
+
+            cardView.findViewById<TextView>(R.id.tv_class_subject)
+                .text = subject
+
+            val iconContainer =
+                cardView.findViewById<FrameLayout>(R.id.class_icon_container)
+
+            val iconImage =
+                cardView.findViewById<ImageView>(R.id.img_class_icon)
+
+            when(subject) {
+
+                "English" -> {
+                    iconContainer.setBackgroundResource(
+                        R.drawable.bg_subject_icon_english
+                    )
+                    iconImage.setImageResource(
+                        R.drawable.ic_subject_english
+                    )
+                }
+
+                "Mathematics" -> {
+                    iconContainer.setBackgroundResource(
+                        R.drawable.bg_subject_icon_math
+                    )
+                    iconImage.setImageResource(
+                        R.drawable.ic_subject_math
+                    )
+                }
+
+                "Science" -> {
+                    iconContainer.setBackgroundResource(
+                        R.drawable.bg_subject_icon_science
+                    )
+                    iconImage.setImageResource(
+                        R.drawable.ic_subject_science
+                    )
+                }
+
+                "Computer" -> {
+                    iconContainer.setBackgroundResource(
+                        R.drawable.bg_subject_icon_computer
+                    )
+                    iconImage.setImageResource(
+                        R.drawable.ic_subject_computer
+                    )
+                }
+
+                "Hindi" -> {
+                    iconContainer.setBackgroundResource(
+                        R.drawable.bg_subject_icon_hindi
+                    )
+                    iconImage.setImageResource(
+                        R.drawable.ic_subject_hindi
+                    )
+                }
+            }
+
+            cardView.findViewById<TextView>(R.id.tv_class_chapter)
+                .text = "Recorded Session"
+
+            cardView.findViewById<TextView>(R.id.tv_class_teacher)
+                .text = "Teacher Available"
+
+            cardView.findViewById<TextView>(R.id.tv_class_status)
+                .text = "Completed"
+
+            container.addView(cardView)
         }
     }
 
@@ -104,26 +235,23 @@ class TodaysClassesFragment : Fragment() {
             binding.tvTabPast.paint.isFakeBoldText = false
             binding.indicatorPast.setBackgroundColor(Color.TRANSPARENT)
 
+
             binding.containerClassCards.visibility = View.VISIBLE
-            Toast.makeText(requireContext(), "Today's Classes selected", Toast.LENGTH_SHORT).show()
+            binding.containerPastClasses.visibility = View.GONE
+            binding.layoutCompletedHeader.visibility = View.VISIBLE
         }
 
         binding.tabPast.setOnClickListener {
             binding.tvTabTodays.setTextColor(Color.parseColor("#718096"))
             binding.tvTabTodays.paint.isFakeBoldText = false
             binding.indicatorTodays.setBackgroundColor(Color.TRANSPARENT)
-
             binding.tvTabPast.setTextColor(Color.parseColor("#002874"))
             binding.tvTabPast.paint.isFakeBoldText = true
             binding.indicatorPast.setBackgroundColor(Color.parseColor("#002874"))
-
-            Toast.makeText(requireContext(), "Past Classes - Next step implementation", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun setupClickListeners() {
-        binding.dateSelector.setOnClickListener {
-            Toast.makeText(requireContext(), "Date picker - Next step implementation", Toast.LENGTH_SHORT).show()
+            binding.containerClassCards.visibility = View.GONE
+            binding.containerPastClasses.visibility = View.VISIBLE
+            binding.layoutCompletedHeader.visibility = View.GONE
+            setupPastClasses()
         }
     }
 

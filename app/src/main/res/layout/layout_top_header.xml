@@ -3,6 +3,7 @@
     android:id="@+id/header_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="12dp"
     android:background="@color/navy_primary">
 
     <LinearLayout
@@ -23,6 +24,8 @@
             android:layout_height="28dp"
             android:contentDescription="Menu"
             android:padding="2dp"
+            android:clickable="true"
+            android:focusable="true"
             android:src="@drawable/ic_hamburger" />
 
         <!-- School Logo -->
@@ -80,35 +83,53 @@
                     android:layout_marginStart="4dp"
                     android:contentDescription="Dropdown"
                     android:src="@drawable/ic_chevron_down"
-                    android:tint="@color/white" />
+                    android:tint="@color/white"/>
             </LinearLayout>
         </LinearLayout>
 
         <!-- Notification Bell with Badge -->
-        <FrameLayout
-            android:id="@+id/btn_notification"
-            android:layout_width="36dp"
-            android:layout_height="36dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <FrameLayout
+                android:id="@+id/btn_notification"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackgroundBorderless">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_bell"
+                    android:clickable="false"
+                    android:focusable="false"/>
+
+                <TextView
+                    android:id="@+id/tv_notification_count"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_gravity="top|end"
+                    android:text="3"
+                    android:clickable="false"
+                    android:focusable="false"/>
+
+            </FrameLayout>
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="center"
-                android:contentDescription="Notifications"
-                android:src="@drawable/ic_bell" />
+                android:id="@+id/btn_profile_menu"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="12dp"
+                android:src="@drawable/ic_profile"/>
 
-            <TextView
-                android:id="@+id/tv_notification_count"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:layout_gravity="top|end"
-                android:background="@drawable/bg_notification_badge"
-                android:gravity="center"
-                android:text="3"
-                android:textColor="@color/white"
-                android:textSize="10sp"
-                android:textStyle="bold" />
-        </FrameLayout>
+        </LinearLayout>
 
     </LinearLayout>
 

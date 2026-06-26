@@ -245,7 +245,6 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
             rank = if (avgScore >= 80f) "8 / 42" else "12 / 42",
             homeworkSubmitted = if (attendance > 90f) 24 else 22,
             homeworkPending = if (attendance > 90f) 2 else 4,
-            behaviour = if (attendance > 90f) "Good" else "Satisfactory",
             numRemarks = if (attendance > 90f) 1 else 2,
             subjectPerformances = subjectPerformances
         )

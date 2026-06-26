@@ -7,7 +7,9 @@
     android:orientation="vertical">
 
     <!-- Top Header -->
-    <include layout="@layout/layout_top_header" />
+    <include
+        android:id="@+id/headerLayout"
+        layout="@layout/layout_top_header"/>
 
     <!-- Content Area with rounded top -->
     <androidx.core.widget.NestedScrollView
@@ -164,6 +166,7 @@
 
                 <!-- Attendance -->
                 <LinearLayout
+                    android:id="@+id/cardAttendance"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -172,10 +175,11 @@
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="32dp"
+                        android:gravity="center"
                         android:text="Attendance"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="10sp" />
+                        android:textSize="10sp"
+                        android:textColor="@color/text_secondary"/>
 
                     <com.studentprofile.app.presentation.components.CircularProgressView
                         android:id="@+id/progress_attendance"
@@ -211,18 +215,21 @@
 
                 <!-- Average Score -->
                 <LinearLayout
+                    android:id="@+id/cardAverageScore"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center_horizontal"
                     android:orientation="vertical">
 
+
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="32dp"
+                        android:gravity="center"
                         android:text="Average Score"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="10sp" />
+                        android:textSize="10sp"
+                        android:textColor="@color/text_secondary"/>
 
                     <com.studentprofile.app.presentation.components.CircularProgressView
                         android:id="@+id/progress_avg_score"
@@ -258,6 +265,7 @@
 
                 <!-- Homework Submitted -->
                 <LinearLayout
+                    android:id="@+id/cardHomework"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -266,11 +274,11 @@
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="32dp"
                         android:gravity="center"
-                        android:text="Homework\nSubmitted"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="10sp" />
+                        android:text="Homework"
+                        android:textSize="10sp"
+                        android:textColor="@color/text_secondary"/>
 
                     <com.studentprofile.app.presentation.components.CircularProgressView
                         android:id="@+id/progress_homework"
@@ -314,10 +322,11 @@
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="32dp"
+                        android:gravity="center"
                         android:text="Behaviour"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="10sp" />
+                        android:textSize="10sp"
+                        android:textColor="@color/text_secondary"/>
 
                     <FrameLayout
                         android:layout_width="65dp"
@@ -452,7 +461,7 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/tv_assessment_view_all"
+                            android:id="@+id/tvViewAllAssessment"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif-medium"
@@ -471,45 +480,6 @@
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
-
-            <!-- ===== SECTION 5: Quick Actions ===== -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:fontFamily="sans-serif-medium"
-                android:text="Quick Actions"
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:clipToPadding="false"
-                android:scrollbars="none">
-
-                <LinearLayout
-                    android:id="@+id/container_quick_actions"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal" />
-
-            </HorizontalScrollView>
-
-            <Button
-                android:id="@+id/btn_logout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="16dp"
-                android:text="Logout"
-                android:textAllCaps="false"
-                android:textSize="16sp"
-                android:backgroundTint="#E53935"
-                android:textColor="@android:color/white" />
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

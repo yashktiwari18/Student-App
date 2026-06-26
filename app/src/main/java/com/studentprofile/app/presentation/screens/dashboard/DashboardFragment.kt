@@ -28,7 +28,12 @@ import com.studentprofile.app.domain.models.RecentAssessment
 import com.studentprofile.app.domain.models.SubjectPerformance
 import com.studentprofile.app.presentation.components.StudentSwitchBottomSheetFragment
 import kotlinx.coroutines.launch
-
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.core.view.GravityCompat
+import android.widget.PopupMenu
+import android.widget.PopupWindow
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.findNavController
 class DashboardFragment : Fragment() {
 
     private var _binding: FragmentDashboardBinding? = null
@@ -46,9 +51,68 @@ class DashboardFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.btnLogout.setOnClickListener {
-            authViewModel.logout()
+        val drawerLayout =
+            requireActivity().findViewById<DrawerLayout>(R.id.drawer_layout)
+        binding.headerLayout.btnHamburger.setOnClickListener {
+            drawerLayout.openDrawer(GravityCompat.START)
         }
+
+        binding.headerLayout.btnProfileMenu.setOnClickListener { view ->
+
+            val popupView = LayoutInflater.from(requireContext())
+                .inflate(R.layout.profile_popup_menu, null)
+
+            val profileOption = popupView.findViewById<LinearLayout>(R.id.menu_profile)
+            val logoutOption = popupView.findViewById<LinearLayout>(R.id.menu_logout)
+            val popupWindow = PopupWindow(
+                popupView,
+                android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
+                android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
+                true
+            )
+            popupWindow.isOutsideTouchable = true
+            popupWindow.isFocusable = true
+            popupWindow.elevation = 24f
+            profileOption.setOnClickListener {
+
+                popupWindow.dismiss()
+
+                findNavController().navigate(
+                    R.id.profileFragment
+                )
+            }
+            binding.headerLayout.btnNotification.setOnClickListener {
+
+                Toast.makeText(
+                    requireContext(),
+                    "Notification Clicked",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                findNavController().navigate(R.id.notificationFragment)
+            }
+            logoutOption.setOnClickListener {
+
+                popupWindow.dismiss()
+
+                authViewModel.logout()
+            }
+
+            popupWindow.showAsDropDown(
+                view,
+                -120,
+                10
+            )
+            profileOption.setOnClickListener {
+
+                popupWindow.dismiss()
+
+                findNavController().navigate(
+                    R.id.profileFragment
+                )
+            }
+        }
+
         binding.tvViewProfile.text = "Switch Student >"
         binding.tvViewProfile.setOnClickListener {
             StudentSwitchBottomSheetFragment().show(childFragmentManager, "StudentSwitchBottomSheet")
@@ -56,9 +120,41 @@ class DashboardFragment : Fragment() {
 
         observeSelectedStudent()
         setupRecentAssessments()
-        setupQuickActions()
         setupClickListeners()
+        binding.cardAttendance.setOnClickListener {
+            findNavController().navigate(
+                R.id.attendanceFragment
+            )
+        }
+
+        binding.cardAverageScore.setOnClickListener {
+
+            findNavController().navigate(
+                R.id.averageScoreFragment
+            )
+
+        }
+//
+        binding.cardHomework.setOnClickListener {
+            findNavController().navigate(
+                R.id.homeworkStatsFragment
+            )
+        }
+
         authViewModel.refreshSelectedStudentFromSession()
+
+        binding.tvSubjectViewAll.setOnClickListener {
+            findNavController().navigate(
+                R.id.subjectPerformanceFragment
+            )
+        }
+        view.findViewById<TextView>(R.id.tvViewAllAssessment)
+            .setOnClickListener {
+
+                findNavController().navigate(
+                    R.id.assessmentFragment
+                )
+            }
     }
 
     private fun observeSelectedStudent() {
@@ -197,35 +293,6 @@ class DashboardFragment : Fragment() {
         }
     }
 
-    private fun setupQuickActions() {
-        data class QuickAction(val label: String, val iconRes: Int)
-
-        val actions = listOf(
-            QuickAction("View Report\nCard", R.drawable.ic_report_card),
-            QuickAction("View\nMarksheet", R.drawable.ic_marksheet),
-            QuickAction("Homework", R.drawable.ic_homework_action),
-            QuickAction("Assignments", R.drawable.ic_assignments),
-            QuickAction("Attendance", R.drawable.ic_attendance)
-        )
-
-        val container = binding.containerQuickActions
-        container.removeAllViews()
-
-        for (action in actions) {
-            val itemView = LayoutInflater.from(requireContext())
-                .inflate(R.layout.item_quick_action, container, false)
-
-            itemView.findViewById<ImageView>(R.id.img_action_icon).setImageResource(action.iconRes)
-            itemView.findViewById<TextView>(R.id.tv_action_label).text = action.label
-
-            itemView.setOnClickListener {
-                Toast.makeText(requireContext(), "${action.label.replace("\n", " ")} - Next step", Toast.LENGTH_SHORT).show()
-            }
-
-            container.addView(itemView)
-        }
-    }
-
     private fun setupClickListeners() {
         binding.tvViewProfile.setOnClickListener {
             Toast.makeText(requireContext(), "View Profile - Next step implementation", Toast.LENGTH_SHORT).show()
@@ -235,7 +302,7 @@ class DashboardFragment : Fragment() {
             Toast.makeText(requireContext(), "View All Subjects - Next step implementation", Toast.LENGTH_SHORT).show()
         }
 
-        binding.tvAssessmentViewAll.setOnClickListener {
+        binding.tvViewAllAssessment.setOnClickListener {
             Toast.makeText(requireContext(), "View All Assessments - Next step implementation", Toast.LENGTH_SHORT).show()
         }
 
